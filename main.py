@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__, static_url_path="/static")
 
@@ -9,8 +9,10 @@ def main():
     '''
     return render_template('index.html')
 
-@app.route("/chat")
+@app.route("/chat", methods=['POST'])
 def chat():
+    username = request.form.get("name")
+    passName = request.form.get("id")
     return render_template('chat.html')
 
 
