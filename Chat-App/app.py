@@ -1,20 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 import speech_recognition as sr
 
 # Speech Recognition
-
-r = sr.Recognizer()
-
-with sr.Microphone() as source:
-    print('Speak Anything: ')
-    audio = r.listen(source)
-    
-    try:
-        text = r.recognize_google(audio)
-        # print('You said: {}'.format(text))
-    except:
-        print('Sorry, couldn\'t recognize what you said.')
         
 # https://flask-socketio.readthedocs.io/en/latest/
 # https://github.com/socketio/socket.io-client
@@ -52,17 +40,29 @@ socketio = SocketIO( app )
 #         print('A student had this question: ' + question)
 
 
-
-@app.route( '/' )
+@app.route('/')
 def hello():
-  return render_template( './ChatApp.html' )
+  return render_template('./ChatApp.html')
+
 
 def messageRecived():
-  print( 'message was received!!!' )
+  print('message was received!!!')
+
 
 @socketio.on( 'my event' )
-def handle_my_custom_event( json ):
+def handle_my_custom_event(json):
+  r = sr.Recognizer()
+  with sr.Microphone() as source:
+      print('Speak Anything: ')
+      audio = r.listen(source)
+
+      try:
+          text = r.recognize_google(audio)
+          print('You said: {}'.format(text))
+      except:
+          print('Sorry, couldn\'t recognize what you said.')
   print( 'recived my event: ' + str( json ) )
+  print(json['message'])
   socketio.emit( 'my response', json, callback=messageRecived )
   if('class how do you feel about' in text):
     # collect the string after about
