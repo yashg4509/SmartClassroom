@@ -24,8 +24,6 @@ app = Flask(__name__)
 app.config[ 'SECRET_KEY' ] = 'jsbcfsbfjefebw237u3gdbdc'
 socketio = SocketIO( app )
 
-
-
 # if('class how do you feel about' in text):
 #     # collect the string after about
 #     word = 'about'    
