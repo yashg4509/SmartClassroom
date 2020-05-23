@@ -29,14 +29,23 @@
     <![endif]-->
   </head>
   <body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
     <div class="text-center well"><b>My Super Python Chat App</b></div>
 
     <div class="container">
-      <div class="col-sm-8">
+      <div class="col-sm-7">
         <div class="no_message">
           <h1 style='color: #ccc'>No message yet..</h1>
           <div class="message_holder"></div>
+        </div>
+      </div>
+      <div class="col-sm-1">
+        <div class="no_message">
+          <div id="iterator"></div>
         </div>
       </div>
       <div class="col-sm-4">
@@ -48,14 +57,34 @@
           <input type="text" class="message form-control" placeholder="Messages">
           <div style="padding-top: 5px;"></div>
           <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-send"></span> Send</button>
+          <div style="padding-top: 5px;"></div>
         </form>
+        <button onclick="myFunction()" class="btn btn-success btn-block" style="background-color:lightseagreen;">Poll</button>
+        <p id="demo"></p>
       </div>
     </div>
 
+    <script>
+      var i = 0
+      function myFunction() {
+        var txt;
+        var question = prompt("Please enter the poll question:", "How do you feel about quadratics?");
+        if (question == null || question == "") {
+          txt = "User cancelled the prompt.";
+        } else {
+          txt = question;
+          i = 0;
+          $( 'h1' ).remove()
+          $( 'div.message_holder' ).append( '<div class="msg_bbl"><b style="color: #000">'+"teacher"+": " + '</b> '+question + '<button onclick="iterate()" style="font-size:16px;background-color:transparent;border:none;margin-left:100px;"><i class="far fa-caret-square-up"></i></button>' + '<p id="iterator"></p>' + '</div>' )
+        }
+        // document.getElementById("demo").innerHTML = txt;
+      }
+      function iterate() {
+        i++;
+        document.getElementById("iterator").innerHTML = i;
+      }
+      </script>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
     <script>
       var socket = io.connect( 'http://' + document.domain + ':' + location.port )
       // broadcast a message
@@ -81,7 +110,7 @@
         console.log( msg )
         if( typeof msg.user_name !== 'undefined' ) {
           $( 'h1' ).remove()
-          $( 'div.message_holder' ).append( '<div class="msg_bbl"><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+          $( 'div.message_holder' ).append( '<div class="msg_bbl"><b style="color: #000">'+msg.user_name+ ": " + '</b> '+msg.message+'</div>' )
         }
       } )
     </script>
