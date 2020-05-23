@@ -19,6 +19,86 @@
         color: #555;
         margin-bottom: 5px;
       }
+      html {
+            --background-colour: #000000;
+            --foreground-colour: #ffffff;
+        }
+
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-colour);
+            z-index: -1;
+        }
+
+        #icon {
+            width: 40px;
+            height: 80px;
+            position: relative;
+            left: calc(50vw - 20px);
+        }
+
+        #central_box {
+            background-color: var(--foreground-colour);
+            position: fixed;
+            width: 75vw;
+            height: 75vh;
+            top: 20vh;
+            left: 12.5vw;
+            border-radius: 100px;
+        }
+
+        .options {
+            font-size: 30px;
+            /* float: left; */
+            /* position: relative; */
+            /* margin-left: 25vw; */
+        }
+
+        #student_tab {
+            position: relative;
+            left: 15vw;
+            top: 1vh;
+            float: left;
+        }
+
+        #teacher_tab {
+            position: relative;
+            left: 45vw;
+            top: 1vh;
+        }
+
+        input {
+            position: relative;
+            top: 7vw;
+            margin-top: 5vh;
+            left: 27.5vw;
+            width: 20vw;
+            height: 10vh;
+            font-size: 30px;
+            outline: none;
+            border: none;
+            border-bottom: 3px solid var(--background-colour);
+            color: var(--background-colour);
+            /* border-bottom: 3px solid var(--shade-3); */
+        }
+
+        .redirect {
+            position: relative;
+            border-radius: 100px;
+            left: 27.5vw;
+            top: 25vh;
+            margin-right: 2vw;
+            color: var(--foreground-colour);
+            background: var(--background-colour);
+            text-decoration: none;
+            width: 10vw;
+            height: 5vh;
+            z-index: 100;
+        }
     </style>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -34,9 +114,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
 
-    <div class="text-center well"><b>My Super Python Chat App</b></div>
+    <div class="text-center well" id = "thing2"><b>My Super Python Chat App</b></div>
 
-    <div class="container">
+    <div class="container" id = "thing1">
       <div class="col-sm-7">
         <div class="no_message">
           <h1 style='color: #ccc'>No message yet..</h1>
@@ -59,8 +139,18 @@
           <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-send"></span> Send</button>
           <div style="padding-top: 5px;"></div>
         </form>
-        <button onclick="myFunction()" class="btn btn-success btn-block" style="background-color:lightseagreen;">Poll</button>
+        <button id = "poll" onclick="myFunction()" class="btn btn-success btn-block" style="background-color:lightseagreen;">Poll</button>
         <p id="demo"></p>
+      </div>
+    </div>
+    <div id = "intro">
+      <div id="background"></div>
+      <div id="central_box">
+        <div id="top"></div>
+        <input type="text" placeholder="Name" id="name"><br>
+        <input type="text" placeholder="Class ID" id="id">    
+        <button class="redirect" id="stu">I am a Student</button>
+        <button class="redirect" id="teach">I am a Teacher</button>
       </div>
     </div>
 
@@ -112,9 +202,25 @@
         console.log( msg )
         if( typeof msg.user_name !== 'undefined' ) {
           $( 'h1' ).remove()
-          $( 'div.message_holder' ).append( '<div class="msg_bbl"><b style="color: #000">'+msg.user_name+ ": " + '</b> '+msg.message+'</div>' )
+          $('div.message_holder').append(`<div class="msg_bbl"><b style="color: #000">${msg.user_name}: </b> ${msg.message}<button onclick="${funct}" style="font-size:16px;background-color:transparent;border:none;margin-left:100px;"><i class="far fa-caret-square-up"></i></button> <p id="${iteraternum}"></p> </div>`)
+          
+          // $( 'div.message_holder' ).append( '<div class="msg_bbl"><b style="color: #000">'+msg.user_name+ ": " + '</b> '+msg.message+'</div>' )
         }
       } )
+      document.getElementById("thing1").hidden = true;
+      document.getElementById("thing2").hidden = true;
+      document.getElementById("stu").addEventListener("click", () => {
+        document.getElementById("intro").hidden = true;
+        document.getElementById("poll").hidden = true;
+        document.getElementById("thing1").hidden = false;
+        document.getElementById("thing2").hidden = false;
+      });
+      document.getElementById("teach").addEventListener("click", () => {
+          document.getElementById("intro").hidden = true;
+        document.getElementById("thing1").hidden = false;
+        document.getElementById("thing2").hidden = false;
+          // document.getElementById("poll").hidden = true;
+        });
     </script>
   </body>
 </html>
