@@ -65,7 +65,7 @@
     </div>
 
     <script>
-      var i = 0
+      let i = []
       function myFunction() {
         var txt;
         var question = prompt("Please enter the poll question:", "How do you feel about quadratics?");
@@ -73,15 +73,17 @@
           txt = "User cancelled the prompt.";
         } else {
           txt = question;
-          i = 0;
-          $( 'h1' ).remove()
-          $( 'div.message_holder' ).append( '<div class="msg_bbl"><b style="color: #000">'+"teacher"+": " + '</b> '+question + '<button onclick="iterate()" style="font-size:16px;background-color:transparent;border:none;margin-left:100px;"><i class="far fa-caret-square-up"></i></button>' + '<p id="iterator"></p>' + '</div>' )
+          $( 'h1' ).remove();
+          let funct = "iterate(" + i.length +")",
+          iteraternum = "iterator" + i.length;
+          $( 'div.message_holder' ).append( `<div class="msg_bbl"><b style="color: #000">teacher: </b> ${question}<button onclick="${funct}" style="font-size:16px;background-color:transparent;border:none;margin-left:100px;"><i class="far fa-caret-square-up"></i></button> <p id="${iteraternum}"></p> </div>`)
+          i.push(0);
         }
         // document.getElementById("demo").innerHTML = txt;
       }
-      function iterate() {
-        i++;
-        document.getElementById("iterator").innerHTML = i;
+      function iterate(num) {
+        i[num]++;
+        document.getElementById("iterator" + num).innerHTML = i[num];
       }
       </script>
 
